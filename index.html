@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Good Night, Keysia ❤</title>
+    <title>For You, Keysia</title>
     <style>
+        :root {
+            --bg-color: #090d16;
+            --accent-gold: #e2b659;
+            --text-light: #f8fafc;
+            --heart-color: rgba(244, 63, 94, 0.4);
+        }
+
         body {
             margin: 0;
             padding: 0;
-            background: radial-gradient(circle, #0f172a 0%, #020617 100%);
-            color: #f1f5f9;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at center, #111827 0%, var(--bg-color) 100%);
+            color: var(--text-light);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,131 +26,168 @@
             text-align: center;
         }
 
-        /* Efek Bintang Bergerak di Latar Belakang */
-        .stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            background: transparent url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=20px&auto=format&fit=crop') repeat;
-            opacity: 0.15;
-            animation: moveStars 100s linear infinite;
-        }
-
-        @keyframes moveStars {
-            from { background-position: 0 0; }
-            to { background-position: 1000px 500px; }
-        }
-
+        /* Container Utama */
         .container {
-            z-index: 2;
+            z-index: 10;
             padding: 20px;
-            max-width: 450px;
+            width: 85%;
+            max-width: 420px;
         }
 
-        /* Halaman Awal - Tombol Hati */
-        #envelope-box {
+        /* Halaman Awal - Tombol Elegan */
+        #start-box {
             display: block;
+            animation: fadeIn 1s ease-in-out;
         }
 
-        .heart-btn {
-            font-size: 60px;
-            background: none;
-            border: none;
+        .gold-btn {
+            background: transparent;
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+            padding: 14px 28px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 30px;
             cursor: pointer;
-            animation: beat 1.2s infinite;
-            filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.7));
+            font-weight: 500;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(226, 182, 89, 0.1);
             -webkit-tap-highlight-color: transparent;
         }
 
-        @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
+        .gold-btn:hover, .gold-btn:active {
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            box-shadow: 0 0 25px rgba(226, 182, 89, 0.4);
         }
 
-        /* Halaman Utama - Surat Cinta */
+        /* Halaman Surat Premium */
         #letter-box {
             display: none;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 35px 25px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         }
 
         h1 {
-            font-size: 26px;
-            color: #f43f5e;
-            margin-bottom: 20px;
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(244, 63, 94, 0.3);
+            font-size: 24px;
+            color: var(--accent-gold);
+            margin-bottom: 25px;
+            font-weight: 400;
+            letter-spacing: 1px;
         }
 
-        p {
-            font-size: 16px;
+        .text-content {
+            font-size: 15px;
             line-height: 1.8;
             color: #cbd5e1;
-            margin-bottom: 15px;
+            min-height: 150px;
+            text-align: justify;
+            text-justify: inter-word;
         }
 
-        .highlight {
-            color: #fda4af;
-            font-weight: bold;
-        }
-
-        .signature {
+        .closing {
             margin-top: 30px;
             font-size: 14px;
-            color: #94a3b8;
-            font-style: italic;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        /* Efek Animasi Hati Lembut */
+        .heart-particle {
+            position: absolute;
+            bottom: -10px;
+            font-size: 20px;
+            color: var(--heart-color);
+            pointer-events: none;
+            animation: floatUp linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="stars"></div>
-
     <div class="container">
-        <!-- Halaman Awal -->
-        <div id="envelope-box">
-            <p style="color: #94a3b8; font-size: 14px; letter-spacing: 1px;">ADA PESAN UNTUK KEYSIA</p>
-            <p style="color: #64748b; font-size: 12px; margin-top: -10px;">(Ketuk jantung di bawah)</p>
-            <button class="heart-btn" onclick="bukaPesan()">❤</button>
+        <!-- Tampilan Awal -->
+        <div id="start-box">
+            <p style="color: #64748b; font-size: 13px; letter-spacing: 3px; margin-bottom: 25px; text-transform: uppercase;">A Private Message for Keysia</p>
+            <button class="gold-btn" onclick="revealLetter()">Open Message</button>
         </div>
 
-        <!-- Halaman Surat Romantis -->
+        <!-- Tampilan Surat Elegan -->
         <div id="letter-box">
-            <h1>Selamat Malam, Keysia ✨</h1>
-            
-            <p>Selamat istirahat ya <span class="highlight">sayangku, cintaku, manisku...</span></p>
-            
-            <p>Makasih banyak ya buat hari ini. Sekarang saatnya kamu lepas semua lelahnya. Jangan tidur kemalaman, tutup matanya pelan-pelan, terus <span class="highlight">bbo yang nyenyak</span> banget yaaa.</p>
-            
-            <p>Lupain semua beban hari ini, biarin pikiran kamu tenang. Semoga mimpi indah malam ini, sampai ketemu di mimpi kita ya.</p>
-            
-            <p style="font-size: 18px; color: #f43f5e; font-weight: bold; margin-top: 25px;">I Love You So Much 🤍</p>
-            
-            <div class="signature">With love, selalu mikirin kamu.</div>
+            <h1>Good Night, Keysia</h1>
+            <div class="text-content" id="typed-text"></div>
+            <div class="closing" id="closing-text">I love you, always. 🤍</div>
         </div>
     </div>
 
     <script>
-        function bukaPesan() {
-            // Sembunyikan tombol hati
-            document.getElementById('envelope-box').style.display = 'none';
-            
-            // Munculkan surat dengan efek fade-in
+        // Kata-kata romantis, tulus, dan dewasa (Gak alay)
+        const message = "Terima kasih untuk hari ini ya, Keysia sayangku, cintaku, manisku. Hari ini kamu sudah melangkah dengan hebat. Sekarang, saatnya tubuh dan pikiranmu beristirahat sepenuhnya. Lepaskan semua lelahmu malam ini. Tutup matamu perlahan, bbo yang nyenyak ya. Semoga tidurmu tenang dan malammu dipenuhi dengan mimpi-mimpi yang indah.";
+        
+        let index = 0;
+        const speed = 40; // Kecepatan efek mengetik teks (ms per karakter)
+
+        function typeWriter() {
+            if (index < message.length) {
+                document.getElementById("typed-text").innerHTML += message.charAt(index);
+                index++;
+                setTimeout(typeWriter, speed);
+            } else {
+                // Munculkan kalimat penutup setelah teks selesai diketik
+                document.getElementById("closing-text").style.opacity = "1";
+            }
+        }
+
+        function revealLetter() {
+            document.getElementById('start-box').style.display = 'none';
             const letter = document.getElementById('letter-box');
             letter.style.display = 'block';
+            letter.style.animation = 'fadeIn 1.5s ease-in-out forwards';
+            
+            // Mulai efek mengetik & animasi hati
+            setTimeout(typeWriter, 500);
+            setInterval(createHeart, 400);
+        }
+
+        // Fungsi membuat animasi gelembung hati mengapung lembut
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            
+            // Variasi bentuk (ada hati, ada kilauan bintang mini)
+            const shapes = ['❤', '✦', '🤍'];
+            heart.innerText = shapes[Math.floor(Math.random() * shapes.length)];
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // 4 - 7 detik biar lambat anggun
+            heart.style.fontSize = Math.random() * 10 + 12 + 'px'; // Ukuran kecil elegan
+            
+            document.body.appendChild(heart);
+
             setTimeout(() => {
-                letter.style.opacity = '1';
-            }, 50);
+                heart.remove();
+            }, 7000);
         }
     </script>
 </body>
