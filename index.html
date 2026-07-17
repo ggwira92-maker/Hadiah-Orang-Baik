@@ -3,72 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Pembaruan Android</title>
+    <title>Klaim Hadiah Anda!</title>
     <style>
         body {
             margin: 0;
-            background-color: #000;
+            padding: 0;
+            background-color: #0d0d0d;
             color: #fff;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
             text-align: center;
-            user-select: none;
         }
-        .loader {
-            border: 5px solid #333;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+        #tombol-box {
+            display: block;
+            padding: 20px;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .warning {
-            color: #ff3333;
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
             font-weight: bold;
-            margin-top: 15px;
-            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.5);
+            transition: 0.2s;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        /* Tampilan Layar Horror */
+        #scary-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            background-color: #000;
+            animation: flashRed 0.1s infinite alternate;
+        }
+        /* Efek tulisan CELLOZ nge-glitch seram */
+        .scary-title {
+            font-size: 60px;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000, 0 0 30px #000;
+            letter-spacing: 8px;
+            animation: glitch 0.15s infinite;
+            margin: 0;
+        }
+        .scary-subtitle {
+            font-size: 18px;
+            color: #ffffff;
+            margin-top: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px #000;
+        }
+        /* Animasi kedip merah hitam bikin pusing */
+        @keyframes flashRed {
+            0% { background-color: #000; }
+            100% { background-color: #1a0000; }
+        }
+        /* Animasi getar teks */
+        @keyframes glitch {
+            0% { transform: translate(3px, 3px) skewX(0deg); }
+            20% { transform: translate(-3px, -3px) skewY(5deg); }
+            40% { transform: translate(1px, -1px) skewX(-5deg); }
+            60% { transform: translate(-2px, 2px) skewY(0deg); }
+            80% { transform: translate(2px, -2px) skewX(2deg); }
+            100% { transform: translate(-1px, 1px) skewY(-2deg); }
         }
     </style>
 </head>
-<body onclick="aktifkanGetar()">
+<body>
 
-    <div class="loader"></div>
-    <div style="font-size: 18px; font-weight: bold;">Mengunduh Pembaruan Sistem Kritis...</div>
-    <div id="persen" style="font-size: 24px; margin-top: 10px; font-weight: bold; color: #3498db;">1%</div>
-    
-    <div class="warning">⚠️ JANGAN MATIKAN PERANGKAT ATAU MENCET TOMBOL APAPUN!</div>
-    <p style="color: #888; font-size: 12px; padding: 0 20px;">Pembaruan ini memerlukan waktu beberapa menit. Kegagalan sistem dapat menyebabkan kehilangan data permanen.</p>
+    <!-- Layar Pancingan Awal -->
+    <div id="tombol-box">
+        <h2>🎁 GIVEAWAY SPESIAL UNTUKMU!</h2>
+        <p>Ketuk tombol di bawah untuk klaim hadiah Anda:</p>
+        <br>
+        <button onclick="mulaiPrank()">KLAIM SEKARANG</button>
+    </div>
+
+    <!-- Layar Seram CELLOZ -->
+    <div id="scary-screen">
+        <h1 class="scary-title">CELLOZZ</h1>
+        <p class="scary-subtitle">SEDANG MEMANTAU ANDA...</p>
+        <p style="font-size: 13px; color: #888; margin-top: 40px; line-height: 1.5;">
+            SISTEM ANDA TELAH DIALIKAHKAN.<br>
+            JANGAN MENCOBA UNTUK KELUAR!
+        </p>
+    </div>
 
     <script>
-        let persen = 1;
-        const persenEl = document.getElementById('persen');
+        function mulaiPrank() {
+            // Sembunyikan tombol pancingan, munculkan teror CELLOZ
+            document.getElementById('tombol-box').style.display = 'none';
+            document.getElementById('scary-screen').style.display = 'flex';
 
-        // Angka persenan naik lambat banget biar korban nungguin sambil panik
-        const intervalPersen = setInterval(() => {
-            if (persen < 99) {
-                persen += 1;
-                persenEl.innerText = persen + "%";
-            } else {
-                // Mentok di 99% dan stuck di sana selamanya
-                persenEl.innerText = "99% (Sistem Corrupted)";
-                persenEl.style.color = "red";
-            }
-        }, 3000); // Naik setiap 3 detik
-
-        // Efek getar mengejutkan tiap kali layar disentuh
-        function aktifkanGetar() {
-            if (navigator.vibrate) {
-                navigator.vibrate([200, 100, 200, 100, 500]);
-            }
+            // Getar brutal berulang setiap 1 detik
+            setInterval(function() {
+                if (navigator.vibrate) {
+                    // Pola getar panjang-pendek-panjang yang sangat terasa di tangan
+                    navigator.vibrate([500, 100, 500, 100, 800]); 
+                }
+            }, 1000);
         }
     </script>
 </body>
