@@ -6,7 +6,7 @@
     <title>For You, Keysia</title>
     <style>
         :root {
-            --bg-dark: #03040e;
+            --bg-dark: #050510;
             --pink-glow: #ff4d6d;
             --blue-glow: #38bdf8;
             --text-light: #f1f5f9;
@@ -15,8 +15,7 @@
         body {
             margin: 0;
             padding: 0;
-            /* Background yang lebih dinamis dan istimewa */
-            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #03040e 100%);
+            background: radial-gradient(circle at center, #1a102f 0%, var(--bg-dark) 100%);
             color: var(--text-light);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             display: flex;
@@ -25,22 +24,38 @@
             height: 100vh;
             overflow: hidden;
             text-align: center;
+            position: relative;
         }
 
-        /* Overlay tekstur untuk kesan premium */
-        body::before {
-            content: "";
+        /* 3. BACKGROUND UTAMA: Partikel Love yang Ramai Bergerak Otomatis */
+        .bg-hearts {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.2;
             pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
         }
 
+        .floating-heart {
+            position: absolute;
+            bottom: -50px;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-110vh) scale(1.2) rotate(360deg); opacity: 0; }
+        }
+
+        /* 1. CANVAS: Untuk Ledakan Kembang Api Love Saat Diklik / Otomatis */
         canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
         }
 
@@ -52,34 +67,35 @@
         }
 
         .aesthetic-btn {
-            background: rgba(255, 255, 255, 0.05);
+            background: linear-gradient(45deg, var(--pink-glow), var(--blue-glow));
             color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: none;
             padding: 16px 36px;
             font-size: 14px;
             letter-spacing: 3px;
             text-transform: uppercase;
             border-radius: 50px;
             cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.5s ease;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            font-weight: bold;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .aesthetic-btn:hover {
-            border-color: var(--pink-glow);
-            box-shadow: 0 0 30px rgba(255, 77, 109, 0.4);
-            transform: translateY(-2px);
+            box-shadow: 0 0 35px rgba(255, 77, 109, 0.7);
+            transform: scale(1.05);
         }
 
         #letter-box {
             display: none;
-            background: rgba(7, 10, 25, 0.5);
-            backdrop-filter: blur(25px);
-            padding: 40px 30px;
+            background: rgba(5, 5, 15, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 35px 25px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 50px rgba(255, 77, 109, 0.05);
+            border: 1px solid rgba(255, 77, 109, 0.25);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 30px rgba(255, 77, 109, 0.1);
         }
 
         .profile-frame {
@@ -90,7 +106,7 @@
             background: linear-gradient(135deg, var(--pink-glow), var(--blue-glow));
             margin: 0 auto 25px auto;
             overflow: hidden;
-            box-shadow: 0 0 30px rgba(255, 77, 109, 0.3);
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.4);
             opacity: 0;
             transform: scale(0.8);
             transition: all 1s ease 0.3s;
@@ -99,27 +115,28 @@
         .profile-inner { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
 
         h1 {
-            font-size: 26px;
-            background: linear-gradient(90deg, #ff758f, #ffffff);
+            font-size: 24px;
+            background: linear-gradient(45deg, #ff9ebb, #9cd4ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 25px;
+            margin-bottom: 22px;
             font-weight: 700;
         }
 
         .text-content {
             font-size: 15px;
             line-height: 1.9;
-            color: #e2e8f0;
-            text-align: center;
-            height: 180px;
-            overflow-y: auto;
+            color: #cbd5e1;
+            text-align: justify;
+            text-justify: inter-word;
+            min-height: 160px;
         }
 
         .closing {
-            margin-top: 30px;
+            margin-top: 25px;
             font-size: 14px;
             color: var(--blue-glow);
+            text-shadow: 0 0 10px rgba(82, 183, 255, 0.6);
             letter-spacing: 2px;
             opacity: 0;
             transition: opacity 1.5s ease;
@@ -128,17 +145,23 @@
 </head>
 <body>
 
+    <!-- Wadah Latar Belakang Love Ramai -->
+    <div class="bg-hearts" id="bgHearts"></div>
+
+    <!-- Canvas Efek Ledakan Kembang Api Love -->
     <canvas id="fireworksCanvas"></canvas>
     
-    <!-- Musik Nidji -->
-    <audio id="bgMusic" src="Rahasia Hati - NIDJI LIRIK.mp3" loop></audio>
+    <!-- 2. AUDIO SISTEM: Memanggil file musik di GitHub -->
+    <audio id="bgMusic" src="Rahasia Hati - NIDJI LIRIK.mp3" loop prefetch></audio>
 
     <div class="container">
+        <!-- Tampilan Awal -->
         <div id="start-box">
-            <p style="color: #64748b; letter-spacing: 4px; margin-bottom: 30px; font-size: 12px;">A SPECIAL MESSAGE</p>
-            <button class="aesthetic-btn" onclick="revealLetter()">Buka Untukmu</button>
+            <p style="color: #64748b; letter-spacing: 4px; margin-bottom: 30px; font-size: 12px; text-transform: uppercase;">A Private Message for Keysia</p>
+            <button class="aesthetic-btn" onclick="revealLetter()">Open Message & Music</button>
         </div>
 
+        <!-- Tampilan Surat Elegan -->
         <div id="letter-box">
             <div class="profile-frame" id="user-photo">
                 <div class="profile-inner">
@@ -167,42 +190,112 @@
         }
 
         function revealLetter() {
-            document.getElementById('bgMusic').play();
+            // Memaksa musik berputar
+            const music = document.getElementById('bgMusic');
+            music.play().catch(e => console.log("Playback diblokir browser: ", e));
+
             document.getElementById('start-box').style.display = 'none';
             const letter = document.getElementById('letter-box');
             letter.style.display = 'block';
-            document.getElementById('user-photo').style.opacity = '1';
-            document.getElementById('user-photo').style.transform = 'scale(1)';
+            
+            const photo = document.getElementById('user-photo');
+            photo.style.opacity = '1';
+            photo.style.transform = 'scale(1)';
+            
             setTimeout(typeWriter, 1000);
-            setInterval(autoFirework, 1500);
+            
+            // Aktifkan kembang api otomatis berkala
+            setInterval(autoFirework, 1400);
         }
 
+        // ================= SISTEM 3: MEMBUAT LATAR BELAKANG LOVE RAMAI OLEH PARTIKEL =================
+        const bgContainer = document.getElementById('bgHearts');
+        const heartSymbols = ['💖', '🤍', '💙', '💝'];
+        
+        function spawnBgHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 4 + 4 + 's';
+            heart.style.fontSize = Math.random() * 12 + 12 + 'px';
+            bgContainer.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 8000);
+        }
+        // Membuat latar belakang dipenuhi love secara konstan
+        for(let i=0; i<15; i++) { setTimeout(spawnBgHeart, Math.random()*4000); }
+        setInterval(spawnBgHeart, 400);
+
+        // ================= SISTEM 1 & 2: KEMBANG API LEDAKAN LOVE (CANVAS) =================
         const canvas = document.getElementById('fireworksCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         let particles = [];
-        class Particle {
+        const explosionColors = ['#ff4d6d', '#ff758f', '#38bdf8', '#7dd3fc', '#ffffff'];
+
+        class HeartParticle {
             constructor(x, y, color) {
                 this.x = x; this.y = y; this.color = color;
                 this.angle = Math.random() * Math.PI * 2;
-                this.speed = Math.random() * 4 + 1;
+                this.speed = Math.random() * 4 + 2;
                 this.velocity = { x: Math.cos(this.angle) * this.speed, y: Math.sin(this.angle) * this.speed };
-                this.opacity = 1; this.fade = 0.01; this.size = Math.random() * 5 + 3;
+                this.opacity = 1;
+                this.fade = Math.random() * 0.015 + 0.01;
+                this.size = Math.random() * 6 + 5;
             }
+
             draw() {
-                ctx.save(); ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.translate(this.x, this.y);
+                
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-this.size/2, -this.size/2, -this.size, -this.size/4, -this.size, this.size/4);
+                ctx.bezierCurveTo(-this.size, this.size*0.7, -this.size/4, this.size*0.8, 0, this.size);
+                ctx.bezierCurveTo(this.size/4, this.size*0.8, this.size, this.size*0.7, this.size, this.size/4);
+                ctx.bezierCurveTo(this.size, -this.size/4, this.size/2, -this.size/2, 0, 0);
+                ctx.closePath();
+                ctx.fill();
                 ctx.restore();
             }
-            update() { this.x += this.velocity.x; this.y += this.velocity.y; this.velocity.y += 0.05; this.opacity -= this.fade; }
+
+            update() {
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.velocity.y += 0.03; // Efek gravitasi halus ke bawah
+                this.opacity -= this.fade;
+            }
+        }
+
+        function createExplosion(x, y) {
+            const count = 20;
+            for (let i = 0; i < count; i++) {
+                const col = explosionColors[Math.floor(Math.random() * explosionColors.length)];
+                particles.push(new HeartParticle(x, y, col));
+            }
         }
 
         function autoFirework() {
             const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height * 0.4;
-            for (let i = 0; i < 15; i++) particles.push(new Particle(x, y, ['#ff4d6d', '#38bdf8', '#ffffff'][Math.floor(Math.random()*3)]));
+            const y = Math.random() * (canvas.height * 0.5) + (canvas.height * 0.1);
+            createExplosion(x, y);
         }
+
+        // Ledakan kembang api hati saat layar disentuh/diklik
+        window.addEventListener('click', (e) => {
+            if(document.getElementById('start-box').style.display === 'none') {
+                createExplosion(e.clientX, e.clientY);
+            }
+        });
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
