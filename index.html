@@ -2,34 +2,95 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Kejutan Spesial!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Error!</title>
     <style>
-        body { text-align: center; padding-top: 50px; font-family: sans-serif; }
-        button { padding: 20px 40px; font-size: 20px; background: red; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+        #tombol-box {
+            display: block;
+            padding: 20px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #25d366;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        #error-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            animation: kedapKedip 0.15s infinite;
+        }
+        .warning-text {
+            font-size: 35px;
+            font-weight: bold;
+            text-shadow: 2px 2px #000;
+        }
+        /* Efek layar kedap-kedip merah-hitam super panik */
+        @keyframes kedapKedip {
+            0% { background-color: red; }
+            50% { background-color: black; }
+            100% { background-color: red; }
+        }
     </style>
 </head>
-<body onclick="mulaiPrank()">
+<body>
 
-    <h1>Kamu Dapat Pesan Rahasia!</h1>
-    <p>Tekan tombol di bawah untuk membukanya:</p>
-    <button>KLIK DI SINI UNTUK LIHAT HADIAH</button>
+    <!-- Tampilan Sebelum Di-klik -->
+    <div id="tombol-box">
+        <h2>🎁 Anda Menerima Hadiah Spesial!</h2>
+        <p>Ketuk tombol di bawah untuk mengklaim hadiah Anda:</p>
+        <br>
+        <button onclick="mulaiPrank()">AMBIL HADIAH</button>
+    </div>
+
+    <!-- Tampilan Setelah Di-klik (Layar Rusak + Getar) -->
+    <div id="error-screen">
+        <div class="warning-text">⚠️ SYSTEM ERROR! ⚠️</div>
+        <p style="font-size: 22px; font-weight: bold; margin-top: 20px;">VIRUS TERDETEKSI!</p>
+        <p style="font-size: 16px;">Sistem Android Anda mengalami kerusakan parah.<br>Segera matikan perangkat Anda!</p>
+    </div>
 
     <script>
         function mulaiPrank() {
-            // Fungsi getar
-            function getar() {
-                if (navigator.vibrate) {
-                    navigator.vibrate([500, 200, 500, 200]); 
-                }
-            }
+            // Sembunyikan layar awal, tampilkan layar error kedap-kedip
+            document.getElementById('tombol-box').style.display = 'none';
+            document.getElementById('error-screen').style.display = 'flex';
 
-            alert("PERINGATAN: Sistem Terinfeksi!");
-            
-            // Loop tanpa henti
-            while (true) {
-                getar();
-                alert("HP KAMU KENA PRANK! Hahaha");
-            }
+            // Jalankan getaran ekstrem secara berulang setiap 1 detik
+            setInterval(function() {
+                if (navigator.vibrate) {
+                    // Bergetar selama 800ms, jeda 100ms, bergetar lagi
+                    navigator.vibrate([800, 100, 800]); 
+                }
+            }, 1000);
         }
     </script>
 </body>
