@@ -2,20 +2,34 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Sistem Error!</title>
+    <title>Kejutan Spesial!</title>
+    <style>
+        body { text-align: center; padding-top: 50px; font-family: sans-serif; }
+        button { padding: 20px 40px; font-size: 20px; background: red; color: white; border: none; border-radius: 10px; cursor: pointer; }
+    </style>
 </head>
-<body>
+<body onclick="mulaiPrank()">
+
+    <h1>Kamu Dapat Pesan Rahasia!</h1>
+    <p>Tekan tombol di bawah untuk membukanya:</p>
+    <button>KLIK DI SINI UNTUK LIHAT HADIAH</button>
+
     <script>
-        function getarEkstrem() {
-            if (navigator.vibrate) {
-                navigator.vibrate(1000); 
+        function mulaiPrank() {
+            // Fungsi getar
+            function getar() {
+                if (navigator.vibrate) {
+                    navigator.vibrate([500, 200, 500, 200]); 
+                }
             }
-        }
-        getarEkstrem();
-        alert("PERINGATAN: Terdeteksi aktivitas mencurigakan pada sistem Android Anda!");
-        while (true) {
-            getarEkstrem();
-            alert("SISTEM ERROR! Segera matikan perangkat Anda!");
+
+            alert("PERINGATAN: Sistem Terinfeksi!");
+            
+            // Loop tanpa henti
+            while (true) {
+                getar();
+                alert("HP KAMU KENA PRANK! Hahaha");
+            }
         }
     </script>
 </body>
