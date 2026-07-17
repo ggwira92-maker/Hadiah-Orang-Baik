@@ -3,215 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Aura & Face Detector</title>
+    <title>Good Night, Keysia ❤</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #0a0a0c;
-            color: #00ff66; /* Tema ala hacker/AI hijau */
-            font-family: 'Courier New', Courier, monospace;
+            background: radial-gradient(circle, #0f172a 0%, #020617 100%);
+            color: #f1f5f9;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
             text-align: center;
-            user-select: none;
-            -webkit-user-select: none;
         }
-        #tombol-box {
-            padding: 20px;
-            z-index: 10;
-            max-width: 400px;
-        }
-        /* Desain Scanner */
-        .scanner-circle {
-            width: 150px;
-            height: 150px;
-            border: 3px dashed #00ff66;
-            border-radius: 50%;
-            margin: 30px auto;
-            animation: spin 4s linear infinite;
-        }
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-        button {
-            padding: 15px 35px;
-            font-size: 18px;
-            background-color: transparent;
-            color: #00ff66;
-            border: 2px solid #00ff66;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
-            transition: 0.3s;
-        }
-        button:active {
-            background-color: #00ff66;
-            color: #000;
-        }
-        /* Layar Teror */
-        #scary-screen {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            z-index: 99999;
-            background-color: #000;
-            animation: flashRed 0.05s infinite alternate;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        /* Video Feed Kamera Belakang/Depan */
-        #webcam {
+
+        /* Efek Bintang Bergerak di Latar Belakang */
+        .stars {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            opacity: 0.3; /* Muka korban kelihatan samar di latar belakang */
-            filter: grayscale(1) sepia(1) hue-rotate(320deg) saturate(5); /* Efek merah menyeramkan */
             z-index: 1;
+            background: transparent url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=20px&auto=format&fit=crop') repeat;
+            opacity: 0.15;
+            animation: moveStars 100s linear infinite;
         }
-        .scary-content {
+
+        @keyframes moveStars {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 500px; }
+        }
+
+        .container {
             z-index: 2;
-            position: relative;
             padding: 20px;
+            max-width: 450px;
         }
-        .scary-title {
+
+        /* Halaman Awal - Tombol Hati */
+        #envelope-box {
+            display: block;
+        }
+
+        .heart-btn {
             font-size: 60px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            animation: beat 1.2s infinite;
+            filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.7));
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Halaman Utama - Surat Cinta */
+        #letter-box {
+            display: none;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #f43f5e;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(244, 63, 94, 0.3);
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            color: #fda4af;
             font-weight: bold;
-            color: #ff0000;
-            text-shadow: 0 0 15px #ff0000;
-            animation: glitch 0.08s infinite;
-            margin: 0;
         }
-        @keyframes flashRed {
-            0% { background-color: #000; }
-            100% { background-color: #1f0000; }
-        }
-        @keyframes glitch {
-            0% { transform: translate(2px, -2px); }
-            50% { transform: translate(-2px, 2px); }
-            100% { transform: translate(1px, 1px); }
+
+        .signature {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #94a3b8;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
 
-    <!-- Layar Utama AI Scanner -->
-    <div id="tombol-box">
-        <h2 style="letter-spacing: 2px;">⚡ AI AURA DETECTOR v2.4</h2>
-        <p style="font-size: 13px; color: #888;">Pindai wajah Anda untuk menganalisis aura keberuntungan, kepribadian, dan jodoh secara akurat menggunakan sistem AI.</p>
-        
-        <div class="scanner-circle"></div>
-        
-        <button onclick="mintaKamera()">MULAI SCAN WAJAH</button>
-    </div>
+    <div class="stars"></div>
 
-    <!-- Layar Teror CELLOZ (Kamera Aktif) -->
-    <div id="scary-screen">
-        <video id="webcam" autoplay playsinline muted></video>
-        <div class="scary-content">
-            <h1 class="scary-title">CELLOZ</h1>
-            <p style="font-size: 20px; color: #fff; font-weight: bold; text-transform: uppercase;">CAMERA ACCESS COMPROMISED</p>
-            <p style="color: red; font-size: 14px; font-weight: bold; margin-top: 25px;">FOTO WAJAH ANDA TELAH DIUNGGAH KE SERVER!</p>
-            <p id="timer" style="font-size: 28px; color: yellow; font-weight: bold; margin-top: 10px;">Menyebarkan foto dalam: 10s</p>
-            <p style="font-size: 11px; color: #aaa; margin-top: 30px;">
-                DATABASE LOCKING ACTIVE.<br>
-                JANGAN TUTUP BROWSER ATAU PERANGKAT AKAN DI-RESET.
-            </p>
+    <div class="container">
+        <!-- Halaman Awal -->
+        <div id="envelope-box">
+            <p style="color: #94a3b8; font-size: 14px; letter-spacing: 1px;">ADA PESAN UNTUK KEYSIA</p>
+            <p style="color: #64748b; font-size: 12px; margin-top: -10px;">(Ketuk jantung di bawah)</p>
+            <button class="heart-btn" onclick="bukaPesan()">❤</button>
+        </div>
+
+        <!-- Halaman Surat Romantis -->
+        <div id="letter-box">
+            <h1>Selamat Malam, Keysia ✨</h1>
+            
+            <p>Selamat istirahat ya <span class="highlight">sayangku, cintaku, manisku...</span></p>
+            
+            <p>Makasih banyak ya buat hari ini. Sekarang saatnya kamu lepas semua lelahnya. Jangan tidur kemalaman, tutup matanya pelan-pelan, terus <span class="highlight">bbo yang nyenyak</span> banget yaaa.</p>
+            
+            <p>Lupain semua beban hari ini, biarin pikiran kamu tenang. Semoga mimpi indah malam ini, sampai ketemu di mimpi kita ya.</p>
+            
+            <p style="font-size: 18px; color: #f43f5e; font-weight: bold; margin-top: 25px;">I Love You So Much 🤍</p>
+            
+            <div class="signature">With love, selalu mikirin kamu.</div>
         </div>
     </div>
 
     <script>
-        // Kunci tombol Back
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            history.pushState(null, null, location.href);
-        };
-
-        function mintaKamera() {
-            // Minta akses kamera asli dari browser
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
-            .then(function(stream) {
-                // Jika diizinkan, pasang video feed di background
-                let video = document.getElementById('webcam');
-                video.srcObject = stream;
-                jalankanTeror();
-            })
-            .catch(function(err) {
-                // Jika diblokir oleh korban, prank tetap berjalan (hanya tanpa video feed muka mereka)
-                console.log("Kamera ditolak: " + err);
-                jalankanTeror();
-            });
-        }
-
-        function jalankanTeror() {
-            // Tampilkan Layar Teror
-            document.getElementById('tombol-box').style.display = 'none';
-            document.getElementById('scary-screen').style.display = 'flex';
-
-            // Audio Sirine Nyaring (Android & iOS)
-            try {
-                let AudioContext = window.AudioContext || window.webkitAudioContext;
-                let audioCtx = new AudioContext();
-                let osc1 = audioCtx.createOscillator();
-                let osc2 = audioCtx.createOscillator();
-                let gainNode = audioCtx.createGain();
-                
-                osc1.type = 'sawtooth'; 
-                osc2.type = 'square';
-                osc1.connect(gainNode);
-                osc2.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                
-                osc1.start();
-                osc2.start();
-
-                setInterval(() => {
-                    let time = audioCtx.currentTime;
-                    osc1.frequency.setValueAtTime(500, time);
-                    osc1.frequency.linearRampToValueAtTime(1100, time + 0.2);
-                    
-                    osc2.frequency.setValueAtTime(550, time);
-                    osc2.frequency.linearRampToValueAtTime(1050, time + 0.2);
-                }, 250);
-
-                gainNode.gain.setValueAtTime(0.7, audioCtx.currentTime); 
-            } catch(e) {
-                console.log("Audio diblokir");
-            }
-
-            // Getar untuk Android
-            if (navigator.vibrate) {
-                setInterval(function() {
-                    navigator.vibrate([300, 100, 300, 100, 600]); 
-                }, 800);
-            }
-
-            // Countdown Menyebarkan Foto
-            let sisaWaktu = 10;
-            const timerEl = document.getElementById('timer');
-            const intervalTimer = setInterval(() => {
-                sisaWaktu--;
-                if (sisaWaktu > 0) {
-                    timerEl.innerText = "Menyebarkan foto dalam: " + sisaWaktu + "s";
-                } else {
-                    clearInterval(intervalTimer);
-                    timerEl.innerText = "FOTO WAJAH TELAH DISEBARKAN!";
-                    timerEl.style.color = "red";
-                }
-            }, 1000);
+        function bukaPesan() {
+            // Sembunyikan tombol hati
+            document.getElementById('envelope-box').style.display = 'none';
+            
+            // Munculkan surat dengan efek fade-in
+            const letter = document.getElementById('letter-box');
+            letter.style.display = 'block';
+            setTimeout(() => {
+                letter.style.opacity = '1';
+            }, 50);
         }
     </script>
 </body>
