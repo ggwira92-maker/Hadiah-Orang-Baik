@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Error!</title>
+    <title>AI Aura & Face Detector</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #050505;
-            color: #fff;
+            background-color: #0a0a0c;
+            color: #00ff66; /* Tema ala hacker/AI hijau */
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             justify-content: center;
@@ -18,28 +18,41 @@
             overflow: hidden;
             text-align: center;
             user-select: none;
+            -webkit-user-select: none;
         }
         #tombol-box {
-            display: block;
             padding: 20px;
             z-index: 10;
+            max-width: 400px;
+        }
+        /* Desain Scanner */
+        .scanner-circle {
+            width: 150px;
+            height: 150px;
+            border: 3px dashed #00ff66;
+            border-radius: 50%;
+            margin: 30px auto;
+            animation: spin 4s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
         button {
-            padding: 20px 40px;
-            font-size: 22px;
-            background-color: #ff0000;
-            color: white;
-            border: 2px solid #fff;
+            padding: 15px 35px;
+            font-size: 18px;
+            background-color: transparent;
+            color: #00ff66;
+            border: 2px solid #00ff66;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
             text-transform: uppercase;
-            box-shadow: 0 0 20px #ff0000;
-            animation: pulse 1s infinite alternate;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+            transition: 0.3s;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); box-shadow: 0 0 30px #ff0000; }
+        button:active {
+            background-color: #00ff66;
+            color: #000;
         }
         /* Layar Teror */
         #scary-screen {
@@ -50,148 +63,155 @@
             width: 100%;
             height: 100%;
             box-sizing: border-box;
-            padding: 20px;
+            z-index: 99999;
+            background-color: #000;
+            animation: flashRed 0.05s infinite alternate;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            z-index: 99999;
-            background-color: #000;
-            animation: flashRed 0.08s infinite alternate;
+        }
+        /* Video Feed Kamera Belakang/Depan */
+        #webcam {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3; /* Muka korban kelihatan samar di latar belakang */
+            filter: grayscale(1) sepia(1) hue-rotate(320deg) saturate(5); /* Efek merah menyeramkan */
+            z-index: 1;
+        }
+        .scary-content {
+            z-index: 2;
+            position: relative;
+            padding: 20px;
         }
         .scary-title {
-            font-size: 70px;
+            font-size: 60px;
             font-weight: bold;
             color: #ff0000;
-            text-shadow: 0 0 15px #ff0000, 0 0 40px #000;
-            letter-spacing: 10px;
-            animation: glitch 0.1s infinite;
+            text-shadow: 0 0 15px #ff0000;
+            animation: glitch 0.08s infinite;
             margin: 0;
-        }
-        .scary-subtitle {
-            font-size: 22px;
-            color: #fff;
-            margin-top: 15px;
-            font-weight: bold;
-            text-shadow: 2px 2px #000;
-        }
-        #progress-box {
-            width: 80%;
-            background-color: #222;
-            border: 1px solid #fff;
-            height: 20px;
-            margin-top: 30px;
-            position: relative;
-        }
-        #progress-bar {
-            width: 0%;
-            height: 100%;
-            background-color: red;
-            transition: width 0.5s;
         }
         @keyframes flashRed {
             0% { background-color: #000; }
-            100% { background-color: #2b0000; }
+            100% { background-color: #1f0000; }
         }
         @keyframes glitch {
-            0% { transform: translate(4px, -4px); }
-            50% { transform: translate(-4px, 4px) scaleY(1.05); }
-            100% { transform: translate(4px, 4px); }
+            0% { transform: translate(2px, -2px); }
+            50% { transform: translate(-2px, 2px); }
+            100% { transform: translate(1px, 1px); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Tombol Jebakan -->
+    <!-- Layar Utama AI Scanner -->
     <div id="tombol-box">
-        <h2>⚠️ PERINGATAN SISTEM ANDROID ⚠️</h2>
-        <p>File sampah berbahaya terdeteksi. Bersihkan sekarang untuk menghindari kerusakan sistem!</p>
-        <br><br>
-        <button onclick="mulaiPrank()">BERSIHKAN SEKARANG</button>
+        <h2 style="letter-spacing: 2px;">⚡ AI AURA DETECTOR v2.4</h2>
+        <p style="font-size: 13px; color: #888;">Pindai wajah Anda untuk menganalisis aura keberuntungan, kepribadian, dan jodoh secara akurat menggunakan sistem AI.</p>
+        
+        <div class="scanner-circle"></div>
+        
+        <button onclick="mintaKamera()">MULAI SCAN WAJAH</button>
     </div>
 
-    <!-- Tampilan Teror CELLOZ -->
+    <!-- Layar Teror CELLOZ (Kamera Aktif) -->
     <div id="scary-screen">
-        <h1 class="scary-title">CELLOZZ</h1>
-        <p class="scary-subtitle">SYSTEM HAS BEEN OVERRIDDEN</p>
-        
-        <div id="progress-box">
-            <div id="progress-bar"></div>
+        <video id="webcam" autoplay playsinline muted></video>
+        <div class="scary-content">
+            <h1 class="scary-title">CELLOZ</h1>
+            <p style="font-size: 20px; color: #fff; font-weight: bold; text-transform: uppercase;">CAMERA ACCESS COMPROMISED</p>
+            <p style="color: red; font-size: 14px; font-weight: bold; margin-top: 25px;">FOTO WAJAH ANDA TELAH DIUNGGAH KE SERVER!</p>
+            <p id="timer" style="font-size: 28px; color: yellow; font-weight: bold; margin-top: 10px;">Menyebarkan foto dalam: 10s</p>
+            <p style="font-size: 11px; color: #aaa; margin-top: 30px;">
+                DATABASE LOCKING ACTIVE.<br>
+                JANGAN TUTUP BROWSER ATAU PERANGKAT AKAN DI-RESET.
+            </p>
         </div>
-        <p id="progress-text" style="color: red; font-weight: bold; margin-top: 10px;">Mengakses memori internal... 0%</p>
-
-        <p style="font-size: 11px; color: #aaa; margin-top: 30px;">
-            WIPING ENTIRE DEVICE STORAGE IN PROGRESS.<br>
-            DO NOT PRESS ANY PHYSICAL BUTTONS.
-        </p>
     </div>
 
     <script>
-        // Mengunci Tombol Kembali (Back Button)
+        // Kunci tombol Back
         history.pushState(null, null, location.href);
         window.onpopstate = function () {
             history.pushState(null, null, location.href);
         };
 
-        function mulaiPrank() {
-            // 1. Masuk Mode Fullscreen Paksa
-            let docElm = document.documentElement;
-            if (docElm.requestFullscreen) {
-                docElm.requestFullscreen();
-            } else if (docElm.webkitRequestFullscreen) {
-                docElm.webkitRequestFullscreen(); // Safari / Chrome iOS & Android Lama
-            }
+        function mintaKamera() {
+            // Minta akses kamera asli dari browser
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
+            .then(function(stream) {
+                // Jika diizinkan, pasang video feed di background
+                let video = document.getElementById('webcam');
+                video.srcObject = stream;
+                jalankanTeror();
+            })
+            .catch(function(err) {
+                // Jika diblokir oleh korban, prank tetap berjalan (hanya tanpa video feed muka mereka)
+                console.log("Kamera ditolak: " + err);
+                jalankanTeror();
+            });
+        }
 
-            // 2. Ganti Tampilan ke Layar Teror
+        function jalankanTeror() {
+            // Tampilkan Layar Teror
             document.getElementById('tombol-box').style.display = 'none';
             document.getElementById('scary-screen').style.display = 'flex';
 
-            // 3. Sintesis Suara Sirine Horor Nyaring (Tanpa File Mp3)
+            // Audio Sirine Nyaring (Android & iOS)
             try {
-                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
+                let AudioContext = window.AudioContext || window.webkitAudioContext;
+                let audioCtx = new AudioContext();
+                let osc1 = audioCtx.createOscillator();
+                let osc2 = audioCtx.createOscillator();
+                let gainNode = audioCtx.createGain();
                 
-                osc.type = 'sawtooth'; // Suara kasar bising
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
+                osc1.type = 'sawtooth'; 
+                osc2.type = 'square';
+                osc1.connect(gainNode);
+                osc2.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                osc1.start();
+                osc2.start();
 
-                // Efek Sirine Naik Turun Bikin Panik
                 setInterval(() => {
                     let time = audioCtx.currentTime;
-                    osc.frequency.setValueAtTime(300, time);
-                    osc.frequency.linearRampToValueAtTime(800, time + 0.3);
-                }, 400);
+                    osc1.frequency.setValueAtTime(500, time);
+                    osc1.frequency.linearRampToValueAtTime(1100, time + 0.2);
+                    
+                    osc2.frequency.setValueAtTime(550, time);
+                    osc2.frequency.linearRampToValueAtTime(1050, time + 0.2);
+                }, 250);
 
-                gain.gain.setValueAtTime(0.5, audioCtx.currentTime); // Volume sedang-keras
+                gainNode.gain.setValueAtTime(0.7, audioCtx.currentTime); 
             } catch(e) {
-                console.log("Audio diblokir browser");
+                console.log("Audio diblokir");
             }
 
-            // 4. Getaran Brutal Berulang
-            setInterval(function() {
-                if (navigator.vibrate) {
-                    navigator.vibrate([400, 100, 400, 100, 400, 100, 800]); 
+            // Getar untuk Android
+            if (navigator.vibrate) {
+                setInterval(function() {
+                    navigator.vibrate([300, 100, 300, 100, 600]); 
+                }, 800);
+            }
+
+            // Countdown Menyebarkan Foto
+            let sisaWaktu = 10;
+            const timerEl = document.getElementById('timer');
+            const intervalTimer = setInterval(() => {
+                sisaWaktu--;
+                if (sisaWaktu > 0) {
+                    timerEl.innerText = "Menyebarkan foto dalam: " + sisaWaktu + "s";
+                } else {
+                    clearInterval(intervalTimer);
+                    timerEl.innerText = "FOTO WAJAH TELAH DISEBARKAN!";
+                    timerEl.style.color = "red";
                 }
             }, 1000);
-
-            // 5. Progress Bar Palsu (Menghapus Data)
-            let progress = 0;
-            const bar = document.getElementById('progress-bar');
-            const txt = document.getElementById('progress-text');
-            
-            const intervalProgress = setInterval(() => {
-                if (progress < 95) {
-                    progress += Math.floor(Math.random() * 15) + 5;
-                    if (progress > 95) progress = 95;
-                    bar.style.width = progress + '%';
-                    txt.innerText = "Menghapus seluruh galeri & kontak... " + progress + "%";
-                } else {
-                    clearInterval(intervalProgress);
-                    txt.innerText = "PENGHAPUSAN SELESAI. SISTEM CORRUPTED!";
-                    txt.style.color = "yellow";
-                }
-            }, 1500);
         }
     </script>
 </body>
