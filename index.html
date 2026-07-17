@@ -27,7 +27,7 @@
             position: relative;
         }
 
-        /* Latar Belakang Love yang Ramai Bergerak Otomatis */
+        /* Latar Belakang Love Ramai Bergerak Otomatis */
         .bg-hearts {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -150,8 +150,8 @@
     <!-- Canvas Efek Ledakan Kembang Api Love -->
     <canvas id="fireworksCanvas"></canvas>
     
-    <!-- AUDIO SISTEM -->
-    <audio id="bgMusic" src="Rahasia Hati - NIDJI LIRIK.mp3" loop preload="auto"></audio>
+    <!-- AUDIO SISTEM (Sudah diarahkan ke file nidji.mp3) -->
+    <audio id="bgMusic" src="nidji.mp3" loop preload="auto"></audio>
 
     <div class="container">
         <!-- Tampilan Awal -->
@@ -189,13 +189,11 @@
         }
 
         function revealLetter() {
-            // Memaksa musik berjalan secara maksimal
+            // Putar Musik Secara Paksa
             const music = document.getElementById('bgMusic');
-            music.load(); 
             music.play().catch(e => {
-                console.log("Mencoba alternatif play...");
-                // Paksa putar ulang jika gagal
-                setTimeout(() => { music.play(); }, 100);
+                console.log("Mencoba play ulang...");
+                setTimeout(() => { music.play(); }, 150);
             });
 
             document.getElementById('start-box').style.display = 'none';
@@ -210,7 +208,7 @@
             setInterval(autoFirework, 1300);
         }
 
-        // ================= RAMAIKAN LATAR BELAKANG DENGAN LOVE PARTIKEL =================
+        // ================= LATAR BELAKANG LOVE RAMAI BERGERAK =================
         const bgContainer = document.getElementById('bgHearts');
         const heartSymbols = ['💖', '🤍', '💙', '💝', '✨'];
         
@@ -219,14 +217,13 @@
             heart.classList.add('floating-heart');
             heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // dipercepat biar lebih ramai mengalir
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
             heart.style.fontSize = Math.random() * 15 + 12 + 'px';
             bgContainer.appendChild(heart);
             setTimeout(() => { heart.remove(); }, 7000);
         }
-        // Loop awal biar langsung ramai
-        for(let i=0; i<20; i++) { setTimeout(spawnBgHeart, Math.random()*3000); }
-        setInterval(spawnBgHeart, 250); // Selalu melahirkan love baru setiap 0.25 detik
+        for(let i=0; i<25; i++) { setTimeout(spawnBgHeart, Math.random()*3000); }
+        setInterval(spawnBgHeart, 200); // Diperbanyak dan dipercepat alirannya
 
         // ================= KEMBANG API LEDAKAN LOVE (CANVAS) =================
         const canvas = document.getElementById('fireworksCanvas');
@@ -250,7 +247,7 @@
                 this.velocity = { x: Math.cos(this.angle) * this.speed, y: Math.sin(this.angle) * this.speed };
                 this.opacity = 1;
                 this.fade = Math.random() * 0.015 + 0.01;
-                this.size = Math.random() * 8 + 6; // Diperbesar ukurannya
+                this.size = Math.random() * 8 + 6;
             }
 
             draw() {
@@ -279,7 +276,7 @@
         }
 
         function createExplosion(x, y) {
-            const count = 25; // Ditambah jumlah ledakannya
+            const count = 25;
             for (let i = 0; i < count; i++) {
                 const col = explosionColors[Math.floor(Math.random() * explosionColors.length)];
                 particles.push(new HeartParticle(x, y, col));
