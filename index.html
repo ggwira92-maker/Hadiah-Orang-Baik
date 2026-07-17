@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klaim Hadiah Anda!</title>
+    <title>Sistem Error!</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #0d0d0d;
+            background-color: #050505;
             color: #fff;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
@@ -17,27 +17,31 @@
             height: 100vh;
             overflow: hidden;
             text-align: center;
+            user-select: none;
         }
         #tombol-box {
             display: block;
             padding: 20px;
+            z-index: 10;
         }
         button {
-            padding: 15px 30px;
-            font-size: 18px;
-            background-color: #e74c3c;
+            padding: 20px 40px;
+            font-size: 22px;
+            background-color: #ff0000;
             color: white;
-            border: none;
-            border-radius: 8px;
+            border: 2px solid #fff;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.5);
-            transition: 0.2s;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px #ff0000;
+            animation: pulse 1s infinite alternate;
         }
-        button:active {
-            transform: scale(0.95);
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); box-shadow: 0 0 30px #ff0000; }
         }
-        /* Tampilan Layar Horror */
+        /* Layar Teror */
         #scary-screen {
             display: none;
             position: fixed;
@@ -50,78 +54,144 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            z-index: 9999;
+            z-index: 99999;
             background-color: #000;
-            animation: flashRed 0.1s infinite alternate;
+            animation: flashRed 0.08s infinite alternate;
         }
-        /* Efek tulisan CELLOZ nge-glitch seram */
         .scary-title {
-            font-size: 60px;
+            font-size: 70px;
             font-weight: bold;
             color: #ff0000;
-            text-shadow: 0 0 10px #ff0000, 0 0 30px #000;
-            letter-spacing: 8px;
-            animation: glitch 0.15s infinite;
+            text-shadow: 0 0 15px #ff0000, 0 0 40px #000;
+            letter-spacing: 10px;
+            animation: glitch 0.1s infinite;
             margin: 0;
         }
         .scary-subtitle {
-            font-size: 18px;
-            color: #ffffff;
-            margin-top: 20px;
+            font-size: 22px;
+            color: #fff;
+            margin-top: 15px;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
             text-shadow: 2px 2px #000;
         }
-        /* Animasi kedip merah hitam bikin pusing */
+        #progress-box {
+            width: 80%;
+            background-color: #222;
+            border: 1px solid #fff;
+            height: 20px;
+            margin-top: 30px;
+            position: relative;
+        }
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: red;
+            transition: width 0.5s;
+        }
         @keyframes flashRed {
             0% { background-color: #000; }
-            100% { background-color: #1a0000; }
+            100% { background-color: #2b0000; }
         }
-        /* Animasi getar teks */
         @keyframes glitch {
-            0% { transform: translate(3px, 3px) skewX(0deg); }
-            20% { transform: translate(-3px, -3px) skewY(5deg); }
-            40% { transform: translate(1px, -1px) skewX(-5deg); }
-            60% { transform: translate(-2px, 2px) skewY(0deg); }
-            80% { transform: translate(2px, -2px) skewX(2deg); }
-            100% { transform: translate(-1px, 1px) skewY(-2deg); }
+            0% { transform: translate(4px, -4px); }
+            50% { transform: translate(-4px, 4px) scaleY(1.05); }
+            100% { transform: translate(4px, 4px); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Layar Pancingan Awal -->
+    <!-- Tombol Jebakan -->
     <div id="tombol-box">
-        <h2>🎁 GIVEAWAY SPESIAL UNTUKMU!</h2>
-        <p>Ketuk tombol di bawah untuk klaim hadiah Anda:</p>
-        <br>
-        <button onclick="mulaiPrank()">KLAIM SEKARANG</button>
+        <h2>⚠️ PERINGATAN SISTEM ANDROID ⚠️</h2>
+        <p>File sampah berbahaya terdeteksi. Bersihkan sekarang untuk menghindari kerusakan sistem!</p>
+        <br><br>
+        <button onclick="mulaiPrank()">BERSIHKAN SEKARANG</button>
     </div>
 
-    <!-- Layar Seram CELLOZ -->
+    <!-- Tampilan Teror CELLOZ -->
     <div id="scary-screen">
         <h1 class="scary-title">CELLOZZ</h1>
-        <p class="scary-subtitle">SEDANG MEMANTAU ANDA...</p>
-        <p style="font-size: 13px; color: #888; margin-top: 40px; line-height: 1.5;">
-            SISTEM ANDA TELAH DIALIKAHKAN.<br>
-            JANGAN MENCOBA UNTUK KELUAR!
+        <p class="scary-subtitle">SYSTEM HAS BEEN OVERRIDDEN</p>
+        
+        <div id="progress-box">
+            <div id="progress-bar"></div>
+        </div>
+        <p id="progress-text" style="color: red; font-weight: bold; margin-top: 10px;">Mengakses memori internal... 0%</p>
+
+        <p style="font-size: 11px; color: #aaa; margin-top: 30px;">
+            WIPING ENTIRE DEVICE STORAGE IN PROGRESS.<br>
+            DO NOT PRESS ANY PHYSICAL BUTTONS.
         </p>
     </div>
 
     <script>
+        // Mengunci Tombol Kembali (Back Button)
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.pushState(null, null, location.href);
+        };
+
         function mulaiPrank() {
-            // Sembunyikan tombol pancingan, munculkan teror CELLOZ
+            // 1. Masuk Mode Fullscreen Paksa
+            let docElm = document.documentElement;
+            if (docElm.requestFullscreen) {
+                docElm.requestFullscreen();
+            } else if (docElm.webkitRequestFullscreen) {
+                docElm.webkitRequestFullscreen(); // Safari / Chrome iOS & Android Lama
+            }
+
+            // 2. Ganti Tampilan ke Layar Teror
             document.getElementById('tombol-box').style.display = 'none';
             document.getElementById('scary-screen').style.display = 'flex';
 
-            // Getar brutal berulang setiap 1 detik
+            // 3. Sintesis Suara Sirine Horor Nyaring (Tanpa File Mp3)
+            try {
+                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                
+                osc.type = 'sawtooth'; // Suara kasar bising
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+
+                // Efek Sirine Naik Turun Bikin Panik
+                setInterval(() => {
+                    let time = audioCtx.currentTime;
+                    osc.frequency.setValueAtTime(300, time);
+                    osc.frequency.linearRampToValueAtTime(800, time + 0.3);
+                }, 400);
+
+                gain.gain.setValueAtTime(0.5, audioCtx.currentTime); // Volume sedang-keras
+            } catch(e) {
+                console.log("Audio diblokir browser");
+            }
+
+            // 4. Getaran Brutal Berulang
             setInterval(function() {
                 if (navigator.vibrate) {
-                    // Pola getar panjang-pendek-panjang yang sangat terasa di tangan
-                    navigator.vibrate([500, 100, 500, 100, 800]); 
+                    navigator.vibrate([400, 100, 400, 100, 400, 100, 800]); 
                 }
             }, 1000);
+
+            // 5. Progress Bar Palsu (Menghapus Data)
+            let progress = 0;
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('progress-text');
+            
+            const intervalProgress = setInterval(() => {
+                if (progress < 95) {
+                    progress += Math.floor(Math.random() * 15) + 5;
+                    if (progress > 95) progress = 95;
+                    bar.style.width = progress + '%';
+                    txt.innerText = "Menghapus seluruh galeri & kontak... " + progress + "%";
+                } else {
+                    clearInterval(intervalProgress);
+                    txt.innerText = "PENGHAPUSAN SELESAI. SISTEM CORRUPTED!";
+                    txt.style.color = "yellow";
+                }
+            }, 1500);
         }
     </script>
 </body>
